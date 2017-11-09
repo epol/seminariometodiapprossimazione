@@ -12,7 +12,7 @@
 \usepackage{appendixnumberbeamer}
 
 \usepackage[utf8x]{inputenc}
-\usepackage[italian]{babel}
+\usepackage[english]{babel}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -88,6 +88,7 @@
 
 \DeclareMathOperator{\im}{Im}
 \DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\sign}{sign}
 
 
 
@@ -188,6 +189,105 @@
   TODO: è quella ottima
 \end{frame}
 
+\section{Iterative methods}
+
+\begin{frame}{Newton's method derivation}
+  Let $Y$ be an approximate solution of the equation $X^2 = A$, so let
+  $X = Y+E$, then:
+  \[ A = \pa{Y+E}^2 = Y^2 + YE + EY + E^2 \]
+  If we omit the second order in $E$ and we fix the first
+  approximation $X_0$ we obtain the following iteration:
+  \begin{align*}
+    X_k E_k + E_k X_k &= A - X_k ^2 \\
+    X_{k+1} &= X_k + E_k
+  \end{align*}
+  
+  Solving the Sylvester equation for $E_k$ at every step we obtain a
+  succession of matrices $\pa{ X_k} _{k\in \mathbb{N}}$.
+\end{frame}
+
+\begin{frame}
+  \begin{align*}
+    X_k E_k + E_k X_k &= A - X_k ^2 \\
+    X_{k+1} &= X_k + E_k
+  \end{align*}
+  This Sylvester equation is non singular if and only if $X_k$ and
+  $-X_k$ have no eigenvalues in common.
+  \vfill
+
+  \begin{myoss}
+    We need to resolve a Sylvester equation for each iteration, so we
+    pay at least $25n^3$ flops (a Schur decomposition) every time!
+  \end{myoss}
+\end{frame}
+
+\begin{frame}
+  If $X_k$ commutes with $E_k$ we can write
+  \[ E_k = \frac{1}{2} X_k ^{-1} \pa{ A - X_k ^2} \Rightarrow X_{k+1}
+    =  \frac{1}{2} \pa{ X_k ^{-1} A + X_k } \]
+  \pause
+  \begin{mylem}
+    Suppose that in the Newton iteration $X_0$ commutes with $A$ and
+    all the iterates are well-defined. Then, for all $k$, $X_k$
+    commutes with $A$ and
+    \[ X_{k+1} = \frac{1}{2} \pa{ X_k + X_k ^{-1} A} \]
+  \end{mylem}
+  \begin{proof}
+    By induction.
+  \end{proof}
+\end{frame}
+
+\begin{frame}{Newton's method}
+  \begin{block}{Newton iteration}
+    Setting $X_0 = A$ (or $X_0 = I$) we obtain
+    \[ \left\{
+        \begin{matrix}
+          X_0 &=& A \\
+          X_{k+1} &=& \frac{1}{2} \pa{ X_k + X_k ^{-1} A}
+        \end{matrix} \right.
+    \]
+  \end{block}
+
+  If $A$ is nonsingular it can be proved that this method has
+  quadratic convergence for $X_0$ chosen sufficiently close to
+  $A^{1/2}$.
+\end{frame}
+
+\begin{frame}{Newton's method convergence}
+  \begin{myteo}
+    Let $A \in \mathbb{C}^{n\times n}$ have no eigenvaules on
+    $\mathbb{R}^-$. The Newton iterates $X_k$ with any $X_0$ that
+    commutes with $A$ are related to the Newton sign iterates:
+    \begin{align*}
+      S_{k+1} = & \frac{1}{2} \pa{ S_k + S_k^{-1}} \\
+      S_0 = & A^{-1/2} X_0 
+    \end{align*}
+    by $X_k = A^{1/2} S_k$.
+
+    So if $A^{-1/2}X_0$ has no pure imaginary eigenvaules, the $X_k$
+    are defined and $X_k$ converges quadratically to
+    $A^{1/2}\sign\pa{A^{-1/2} X_0}$.
+  \end{myteo}
+\end{frame}
+
+\begin{frame}{Newton's method convergence}
+  \begin{myteo}
+    If $A^{-1/2}X_0$ has no pure imaginary eigenvaules, the $X_k$
+    are defined and $X_k$ converges quadratically to
+    $A^{1/2}\sign\pa{A^{-1/2} X_0}$.
+
+    If the spectrum  of $A^{-1/2} X_0$ lies in the right half-plane
+    then $X_k$ converges quadratically to $A^{1/2}$ and, for any
+    consistent norm,
+    \[ \norm{X_{k+1} - A^{1/2}} \le \frac{1}{2}\norm{X_k ^{-1}}
+      \norm{X_k - A^{1/2}} ^2 \]
+  \end{myteo}
+  \vfill
+  
+  The hypothesis that $A$ has no eigenvaules in $\mathbb{R}^-$ implies
+  that the spectrum of $A^{1/2}$ is contained in the open right
+  half-plane.
+\end{frame}
 
 
 \end{document}
