@@ -263,11 +263,12 @@
       S_0 = & A^{-1/2} X_0 
     \end{align*}
     by $X_k = A^{1/2} S_k$.
-
-    So if $A^{-1/2}X_0$ has no pure imaginary eigenvaules, the $X_k$
-    are defined and $X_k$ converges quadratically to
-    $A^{1/2}\sign\pa{A^{-1/2} X_0}$.
   \end{myteo}
+  \begin{proof}
+    By induction on $k$:
+    \[ X_{k+1} = \frac{1}{2}\pa{A^{1/2}S_k + S_k^{-1}A^{-1/2}A} =
+        A^{1/2}\frac{1}{2}\pa{S_k + S_k ^{-1}} \]
+  \end{proof}
 \end{frame}
 
 \begin{frame}{Newton's method convergence}
@@ -284,9 +285,23 @@
   \end{myteo}
   \vfill
   
-  The hypothesis that $A$ has no eigenvaules in $\mathbb{R}^-$ implies
-  that the spectrum of $A^{1/2}$ is contained in the open right
-  half-plane.
+  The hypothesis that $A$ has no eigenvaules in $\mathbb{R}^-$ and our
+  choice of the principal square root function imply that the spectrum
+  of $A^{1/2}$ is contained in the open right half-plane.
+\end{frame}
+
+\begin{frame}{Newton's method speed of convergence}
+  We have proved that the Newton's method converges for any choice of
+  $X_0$ that commutes with $A$, moreover it converges to $A^{1/2}$
+  quadratically for $X_0 = A$.
+  \vfill
+  
+  It's known that the Newton iteration for $\sign\pa{M}$ requires many
+  iterations when $M$ has an eigenvalue close to the imaginary axis.
+
+  Recalling the relation $X_k = A^{1/2} S_k$ we can conclude that our
+  Newton iteration requires many iterations when $A$ has an eigenvalue
+  close to the negative real axis.  
 \end{frame}
 
 
