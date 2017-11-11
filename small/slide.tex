@@ -191,6 +191,8 @@
 
 \section{Iterative methods}
 
+\subsection{Newton iteration}
+
 \begin{frame}{Newton's method derivation}
   Let $Y$ be an approximate solution of the equation $X^2 = A$, so let
   $X = Y+E$, then:
@@ -302,6 +304,34 @@
   Recalling the relation $X_k = A^{1/2} S_k$ we can conclude that our
   Newton iteration requires many iterations when $A$ has an eigenvalue
   close to the negative real axis.  
+\end{frame}
+
+\subsection{DB iteration}
+
+\begin{frame}{Denman and Beavers (DB) iteration}
+  If we set $Y_k = A^{-1} X_k$ we can write
+  \[ X_{k+1} = \frac{1}{2}\pa{X_k + Y_k ^{-1}} \]
+  \[ Y_{k+1} = A^{-1} X_{k+1} = \frac{1}{2}\pa{ Y_k + X_k^{-1}} \]
+  (using, again, the fact that $X_k$ commutes with $A$)
+
+  \begin{block}{DB iteration}
+    \begin{align*}
+      X_{k+1} &= \frac{1}{2} \pa{ X_k + Y_k ^{-1}} & X_0 &= A \\
+      Y_{k+1} &= \frac{1}{2} \pa{ Y_k + X_k ^{-1}} & Y_0 &= I 
+    \end{align*}
+  \end{block}
+\end{frame}
+
+\begin{frame}{DB convergence}
+  The DB iteration is an algebraic manipulation of the Newton
+  iteration, so if $A$ has no eigenvalues on $\mathbb{R}^-$ then we
+  can write:
+  \begin{align*}
+    \lim _{k \to \infty} X_k &= A^{1/2} \\
+    \lim _{k\to \infty} Y_k &= A^{-1/2}
+  \end{align*}  
+  It has the same proprieties of the Newton iterations.
+
 \end{frame}
 
 
