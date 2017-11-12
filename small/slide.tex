@@ -401,7 +401,37 @@
 \subsection{Methods comparison}
 
 \begin{frame}{Methods comparison}
-  TODO: tabella
+  \begin{figure}
+    \begin{tabular}{ r | c c }
+      Iteration & Operations & Flops \\
+      \hline
+      Newton & D & $\frac{8}{3}n^3$ \\
+      DB & 2I & $4n^3$ \\
+      Product DB & M+I & $4n^3$ \\
+      CR & M+D & $\frac{14}{3}n^3$ \\
+      IN & M+D & $\frac{14}{3}n^3$
+    \end{tabular}
+  \end{figure}
+  \begin{itemize}
+  \item \textbf{M}: matrix multiplication;
+  \item \textbf{I}: matrix inversion;
+  \item \textbf{D}: solution of a multiple right-hand side linear system.
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{Singular matrices}
+  If $A$ is singular (but with semisimple zero eigenvalues) the square
+  root still exists.
+
+  Our iterative methods may fail on the first step (they may require
+  the inversion of a singual matrix), it can be proved that if we
+  start from the second step then the methods converge (in exact
+  arithmetic).  \vfill
+  
+  While convergence holds in exact arithmetic, numerical instability
+  is likely. There are ways to modify the methods in order to avoid
+  this.
+\end{frame}
+
 
 \end{document}
