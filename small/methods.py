@@ -32,10 +32,11 @@ def newton_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
     X = [ A]
     try:
         res = [ norm(numpy.dot(X,X) - A) ]
-        (res > tol).all()
+        (res[-1] > tol).all()
     except:
         logging.exception('Invalid norm function')
         return None
+    commutativity = [ norm(numpy.dot(A,X[-1]) - numpy.dot(X[-1],A)) ]
     while (res[-1] > tol).all() and (i < maxiter):
         try:
             X_new = 0.5* ( X[-1] + numpy.linalg.solve(X[-1],A))
@@ -44,12 +45,14 @@ def newton_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
             break            
         X.append(X_new)
         res.append(norm( numpy.dot(X_new,X_new) - A ))
+        commutativity.append(norm(numpy.dot(A,X_new) - numpy.dot(X_new,A)))
         i = i+1
     if (res[-1]> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
     return { 'result': X[-1],
              'approximations': X,
              'residues': res,
-             'iterations': i
+             'iterations': i,
+             'commutativity': commutativity
     }
 
