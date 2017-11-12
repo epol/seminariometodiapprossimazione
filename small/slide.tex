@@ -433,5 +433,42 @@
   this.
 \end{frame}
 
+\section{Stability and accuracy}
+
+\begin{frame}{Pure Newton method stability}
+  \begin{align*}
+    X_k E_k + E_k X_k &= A - X_k ^2 \\
+    X_{k+1} &= X_k + E_k
+  \end{align*}
+  From standard converge theory we know that, under our hypothesis,
+  ``pure'' Newton's method is stable because (sufficiently small)
+  rouding errors of one step are damped out in the next. \vfill
+
+  We proved that our version of the Newton's method works when $X_k$
+  commutes with $A$ and it is true for every $k$ if $X_0$ satisfies
+  that condition. Rounding error may take $X_k$ outside that path and
+  the error may be amplified at every step.
+\end{frame}
+
+\begin{frame}{Newton iteration stability}
+  The iteration function is $g(X) = \frac{1}{2}\pa{X+ X^{-1}A}$, its
+  Fr\'echet derivative in $X=A^{1/2}$ is
+  \[ L_g\pa{A^{1/2},E} = \frac{1}{2}\pa{E-A^{-1/2}EA^{1/2}} \]
+  the eigenvalues of the Kronecker matrix $\tilde L$ are:
+  \[ \frac{1}{2}\pa{1-\lambda _i ^{1/2} \lambda _j^{-1/2}} \]
+  where $\lambda _i$ are the eigenvales of $A$. So we need
+  \[ \max _{i,j} \frac{1}{2} \abs{ 1- \lambda _i^{1/2} \lambda
+      _j^{-1/2}} <1 \]
+\end{frame}
+
+\begin{frame}{Newton iteration instability}
+  It can be shown that the Newton iteration can diverge when started
+  arbitrarily close to $A^{1/2}$ when the previous condition is not
+  satisfied. \vfill
+
+  The above restriction is servere, for example it can be shown that
+  if $A$ is Hermitian positive definite then the condition is
+  equivalent to $\kappa _2 (A) <9$.
+\end{frame}
 
 \end{document}
