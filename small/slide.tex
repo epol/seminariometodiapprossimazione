@@ -351,6 +351,57 @@
   \note{Facciamo un'inversione di matrice in meno ma un prodotto in più}
 \end{frame}
 
+\subsection{CR method}
 
+\begin{frame}{CR and IN methods derivation}
+  Recall that we derived the Newton method writing
+  \[ X_{k+1} - X_k = E_{k} = \frac{1}{2} X_k^{-1} \pa{A-X_k^2} \]
+  
+  So we write:
+  \begin{align*}
+    E_{k+1} &= \frac{1}{2}X_{k+1}^{-1}\pa{A-X_{k+1}^2} \\
+    &= \frac{1}{2}X_{k+1}^{-1}\pa{A-\frac{1}{4}\pa{X_k +X_k^{-1}A}^2}
+    \\
+    &= \frac{1}{2}X_{k+1}^{-1}\pa{\frac{2A-X_k^2 -X_k^{-2}A^2}{4}} \\
+    &= -\frac{1}{2}X_{k+1}^{-1}\pa{\frac{X_k - X_k^{-1}A}{2}}^2  \\
+    &= -\frac{1}{2}X_{k+1}^{-1}E_k^2 = -\frac{1}{2}E_kX_{k+1}^{-1}E_k
+  \end{align*}
+\end{frame}
+
+\begin{frame}{Incremental iteration}
+  \begin{block}{IN iteration}
+    \begin{align*}
+      X_{k+1} &= X_k + E_k & X_0 &= A \\
+      E_{k+1} &= -\frac{1}{2} E_k X_{k+1}^{-1} E_k & E_0
+                                 &=\frac{1}{2}\pa{I-A}
+    \end{align*}
+  \end{block}
+  With 
+  \begin{align*}
+    \lim _{k\to \infty} X_k & = A^{1/2} & \lim _{k\to \infty} E_k &=0
+  \end{align*}
+\end{frame}
+
+\begin{frame}{CR iteration}
+  Setting $Y_k = 2E_k$ and $Z_k = 4X_{k+1}$ in the previous relation
+  we obtain
+  \begin{block}{CR iteration}
+    \begin{align*}
+      Y_{k+1} &= -Y_kZ_k^{-1}Y_k & Y_0 &= I -A \\
+      Z_{k+1} &= Z_k + 2Y_{k+1} & Z_0 &= 2(I+A)
+    \end{align*}
+  \end{block}
+  With 
+  \begin{align*}
+    \lim _{k\to \infty} Y_k & = 0 & \lim _{k\to \infty} Z_k &=
+                                                              4A^{1/2}
+  \end{align*}
+\end{frame}
+
+\subsection{Methods comparison}
+
+\begin{frame}{Methods comparison}
+  TODO: tabella
+\end{frame}
 
 \end{document}
