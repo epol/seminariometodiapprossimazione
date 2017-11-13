@@ -27,6 +27,9 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.14}
 
+% to do small font tabular columns
+\usepackage{array}
+
 
 \newcounter{counter1}
 
@@ -471,4 +474,119 @@
   equivalent to $\kappa _2 (A) <9$.
 \end{frame}
 
+\begin{frame}{Newton iteration accuracy}
+  Taking $\norm{E} \le \norm{A^{1/2}} u$ we can write:
+  \begin{align*}
+    \norm{L_g\pa{A^{1/2},E}} &= \frac{1}{2}\norm{E-A^{-1/2}EA^{1/2}} \\
+      &\le \frac{1}{2}\pa{\norm{E} +
+        \norm{A^{-1/2}}\norm{E}\norm{A^{1/2}}} \\
+    & \le \frac{1}{2}\norm{A^{1/2}}\pa{1+\kappa\pa{A^{1/2}}}u
+  \end{align*}
+  getting the following estimate
+  \begin{block}{Newton iteration relative limiting accuracy}
+    \[ \frac{1}{2}\pa{1+\kappa\pa{A^{1/2}}}u \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{DB iteration stability}
+  The iteration function is
+  \[ G\pa{\bra{\begin{matrix}X\\Y\end{matrix}}} = \frac{1}{2}\bra{
+      \begin{matrix}
+        X+Y^{-1} \\
+        Y+X^{-1}
+      \end{matrix}
+    } \]
+  Any point in the form $\pa{B,B^{-1}}$ is a fixed point, and such
+  point the derivative is
+  \[ L_g\pa{ \bra{ \begin{matrix}B\\B^{-1}\end{matrix}},
+      \bra{\begin{matrix}E\\F\end{matrix}}} = \frac{1}{2}
+    \bra{\begin{matrix} E-BFB \\ F-B^{-1}EB^{-1}\end{matrix}} \]
+
+  It's easy to see that $L\pa{ \pa{B,B^{-1}}, \cdot}$ is idempotent,
+  in particular it's idempotent at the fixed point $\pa{A^{1/2},A^{-1/2}}$
+  and so the method is stable.
+\end{frame}
+
+\begin{frame}{DB iteration accuracy}
+  Setting $\norm{E} \le u\norm{A^{1/2}}$ and $\norm{F} \le
+  u\norm{A^{-1/2}}$ we have
+  \[ \norm{\frac{1}{2}\pa{E-A^{1/2}FA^{1/2}}} \le
+    \frac{1}{2}\norm{A^{1/2}}\pa{1+ \kappa\pa{A^{1/2}}}u \]
+  And a similar relation for the second block of $L_g$
+  \vfill
+
+  So the relative limiting accuracy estimate is
+  \begin{block}{DB relative accuracy}
+    \[ \frac{1}{2}\pa{ 1 + \kappa\pa{A^{1/2}}}u \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{Product DB iteration stability and accuracy}
+  \[ G\pa{\bra{\begin{matrix}M\\X\end{matrix}}} = \frac{1}{2} \bra{
+      \begin{matrix}
+        I+ \frac{1}{2}\pa{M+M^{-1}} \\
+        X\pa{I+M^{-1}}
+      \end{matrix}} \]
+  \[ L_g\pa{ \bra{ \begin{matrix}I\\X\end{matrix}},
+      \bra{\begin{matrix}E\\F\end{matrix}}} = \bra{\begin{matrix}0\\
+        F-\frac{1}{2}XE\end{matrix}} \]
+  Again it is idempotent and so the iteration is stable at the fixed
+  point $\pa{I,A^{1/2}}$. \vfill
+
+  From this formula we could compute a limiting accuracy estimate
+  indipendent of $A$:
+  \begin{block}{Product DB relative accuracy}
+    \[ \frac{3}{2}u \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{IN iteration stability and accuracy}
+  \[ G\pa{\bra{\begin{matrix}X\\E\end{matrix}}} = \bra{
+      \begin{matrix}
+        X+E  \\
+        -\frac{1}{2} E\pa{X+E}^{-1}E
+      \end{matrix}} \]
+  \[ L_g\pa{ \bra{ \begin{matrix}A^{1/2}\\0\end{matrix}},
+      \bra{\begin{matrix}E\\F\end{matrix}}} = \bra{\begin{matrix}E+F\\
+        0 \end{matrix}} \]
+  It's idempotent and so it's stable. \vfill
+  
+  
+  \begin{block}{CR method relative accuracy}
+    \[ u \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{CR iteration stability and accuracy}
+  \[ G\pa{\bra{\begin{matrix}Y\\Z\end{matrix}}} = \bra{
+      \begin{matrix}
+        -YZ^{-1}Y  \\
+        Z-2YZ^{-1}Y
+      \end{matrix}} \]
+  \[ L_g\pa{ \bra{ \begin{matrix}0\\Z\end{matrix}},
+      \bra{\begin{matrix}E\\F\end{matrix}}} = \bra{\begin{matrix}0\\
+        F \end{matrix}} \]
+  It's idempotent and so it's stable. \vfill
+  
+  Recalling that $Z = 4A^{1/2}$ we get:
+  \begin{block}{CR method accuracy}
+    \[ u \]
+  \end{block}
+\end{frame}
+
+\begin{frame}{Methods comparison}
+  \begin{figure}
+    \begin{tabular}{ r | c c >{\small}c }
+      Iteration & Stability & Accuracy & Flops \\
+      \hline
+      Newton & Under conditions & $\frac{1}{2}\pa{1+ \kappa\pa{A^{1/2}}}u$ & $\frac{8}{3}n^3$ \\
+      DB & Yes & $\frac{1}{2}\pa{1+ \kappa\pa{A^{1/2}}}u$ & $4n^3$ \\
+      Prod DB & Yes & $\frac{3}{2}u$ & $4n^3$ \\
+      IN & Yes & $u$ & $\frac{14}{3}n^3$ \\
+      CR & Yes & $u$ & $\frac{14}{3}n^3$
+    \end{tabular}
+  \end{figure}
+\end{frame}
+
 \end{document}
+
