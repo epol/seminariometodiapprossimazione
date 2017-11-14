@@ -590,23 +590,130 @@
 
 \section{Numerical experiments}
 
-\begin{frame}{Test table}
-  \begin{tabular}{r| c c c c}
-    Method & Iteration & Absolute error & Relative error & Square residue \\
-    \hline
-    Newton & $100$ & $3.13e+02$ & $1.69e+02$ & $5.30e+02$ \\
-    Newton & $8$ & $6.50e-16$ & $3.51e-16$ & $9.44e-16$ \\
-    \hline
-    DB & $100$ & $1.82e-15$ & $9.83e-16$ & $3.25e-15$ \\
-    DB & $27$ & $3.68e-16$ & $1.99e-16$ & $6.86e-16$ \\
-    \hline
-    Prod DB & $7$ & $9.26e-16$ & $5.00e-16$ & $1.69e-15$ \\
-    Prod DB & $7$ & $9.26e-16$ & $5.00e-16$ & $1.69e-15$ \\
-    \hline
-    CR & $7$ & $0.00e+00$ & $0.00e+00$ & $3.65e-16$ \\
-    CR & $6$ & $0.00e+00$ & $0.00e+00$ & $3.65e-16$ \\
-  \end{tabular}
+\subsection{First example}
 
+\begin{frame}{First example}
+  Let $A = I + uv^T$ where $u=\bra{ 1\ 2^2\ \dots\ n^2}$ and $v =
+  \bra{ 0\ 1\ 2^2\ \dots\ (n-1)^2}$. We have $\psi_n(A) = 4.92e+04$ and
+  $\kappa (A^{1/2}) = 2.22e+02$.
+  
+  \begin{tabular}{r| c c c c}
+    Method & Index & Absolute error & Relative error & Square residue \\
+    \hline
+    Newton & $100$ & $inf$ & $inf$ & $inf$ \\
+    Newton & $10$ & $4.37e-02$ & $1.97e-04$ & $1.93e+01$ \\
+    \hline
+    DB & $100$ & $2.11e-11$ & $9.49e-14$ & $9.26e-09$ \\
+    DB & $13$ & $2.60e-12$ & $1.17e-14$ & $1.18e-10$ \\
+    \hline
+    Prod DB & $13$ & $4.08e-12$ & $1.84e-14$ & $4.69e-10$ \\
+    Prod DB & $12$ & $4.08e-12$ & $1.84e-14$ & $4.69e-10$ \\
+    \hline
+    CR & $13$ & $1.44e-11$ & $6.49e-14$ & $6.22e-09$ \\
+    CR & $12$ & $1.44e-11$ & $6.49e-14$ & $6.22e-09$ \\
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{Eigenvalues}
+  It has one $5e4$ eigenvaule and the other are $1$.
+  \includegraphics[width=\textwidth,height=\textheight]{"e1/eigs"}
+\end{frame}
+
+\begin{frame}{Newton}
+  \includegraphics[width=\textwidth,height=\textheight]{"e1/Newton - absplot"}
+\end{frame}
+\begin{frame}{DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"e1/DB - absplot"}
+\end{frame}
+\begin{frame}{Product DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"e1/Product DB - absplot"}
+\end{frame}
+\begin{frame}{CR}
+  \includegraphics[width=\textwidth,height=\textheight]{"e1/CR - absplot"}
+\end{frame}
+
+\subsection{Moler}
+
+\begin{frame}{First example}
+  Let $A = \mathrm{gallery}('moler',16)$, it is symmetric positive
+  definite with $\psi_n(A) = 8.64e+01$ and $\kappa(A^{1/2}) = 2.04e+05$.
+
+  \begin{tabular}{r| c c c c}
+    Method & Index & Absolute error & Relative error & Square residue \\
+    \hline
+    Newton & $100$ & $2.32e+10$ & $1.99e+09$ & $8.15e+03$ \\
+    Newton & $9$ & $2.47e-03$ & $2.12e-04$ & $1.47e-02$ \\
+    \hline
+    DB & $100$ & $5.31e-09$ & $4.55e-10$ & $3.05e-08$ \\
+    DB & $62$ & $5.31e-09$ & $4.55e-10$ & $3.04e-08$ \\
+    \hline
+    Prod DB & $19$ & $1.45e-09$ & $1.25e-10$ & $5.71e-09$ \\
+    Prod DB & $18$ & $1.45e-09$ & $1.25e-10$ & $5.71e-09$ \\
+    \hline
+    CR & $19$ & $0.00e+00$ & $0.00e+00$ & $7.74e-14$ \\
+    CR & $18$ & $0.00e+00$ & $0.00e+00$ & $7.74e-14$ \\
+  \end{tabular}  
+\end{frame}
+
+\begin{frame}{Eigenvalues}
+  It has $15$ eigenvalues of order $1$ and a small eigenvalue of order $10^{-9}$.
+  \includegraphics[width=\textwidth,height=\textheight]{"moler/eigs"}
+\end{frame}
+
+\begin{frame}{Newton}
+  \includegraphics[width=\textwidth,height=\textheight]{"moler/Newton - absplot"}
+\end{frame}
+\begin{frame}{DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"moler/DB - absplot"}
+\end{frame}
+\begin{frame}{Product DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"moler/Product DB - absplot"}
+\end{frame}
+\begin{frame}{CR}
+  \includegraphics[width=\textwidth,height=\textheight]{"moler/CR - absplot"}
+\end{frame}
+
+
+\subsection{Chebyshev-Vandermonde}
+
+\begin{frame}{First example}
+  Let $A = \mathrm{gallery}('chebvand',16)$, it has $\psi_n(A) = 4.36$
+  and $\kappa(A^{1/2}) = 3.91e+06$
+
+  \begin{tabular}{r| c c c c}
+    Method & Index & Absolute error & Relative error & Square residue \\
+    \hline
+    Newton & $100$ & $9.72e+08$ & $1.55e+08$ & $1.14e+09$ \\
+    Newton & $6$ & $5.86e-02$ & $9.35e-03$ & $6.01e-02$ \\
+    \hline
+    DB & $100$ & $7.05e-05$ & $1.12e-05$ & $1.81e-04$ \\
+    DB & $20$ & $7.05e-05$ & $1.12e-05$ & $1.81e-04$ \\
+    \hline
+    Prod DB & $23$ & $7.16e-05$ & $1.14e-05$ & $1.69e-04$ \\
+    Prod DB & $23$ & $7.16e-05$ & $1.14e-05$ & $1.69e-04$ \\
+    \hline
+    CR & $23$ & $0.00e+00$ & $0.00e+00$ & $5.36e-15$ \\
+    CR & $22$ & $0.00e+00$ & $0.00e+00$ & $5.36e-15$ \\
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Eigenvalues}
+  It has $8$ complex eigenvalues with modules of order $1$ and $8$
+  real positive eigenvalues between $3.6$ and $10^{-11}$.
+  \includegraphics[width=\textwidth,height=\textheight]{"chebvand/eigs"}
+\end{frame}
+
+\begin{frame}{Newton}
+  \includegraphics[width=\textwidth,height=\textheight]{"chebvand/Newton - absplot"}
+\end{frame}
+\begin{frame}{DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"chebvand/DB - absplot"}
+\end{frame}
+\begin{frame}{Product DB}
+  \includegraphics[width=\textwidth,height=\textheight]{"chebvand/Product DB - absplot"}
+\end{frame}
+\begin{frame}{CR}
+  \includegraphics[width=\textwidth,height=\textheight]{"chebvand/CR - absplot"}
 \end{frame}
 
 \end{document}
