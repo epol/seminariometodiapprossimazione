@@ -588,5 +588,26 @@
   \end{figure}
 \end{frame}
 
+\section{Numerical experiments}
+
+\begin{frame}{Test table}
+  \begin{tabular}{r| c c c c}
+    Method & Iteration & Absolute error & Relative error & Square residue \\
+    \hline
+    Newton & $100$ & $3.13e+02$ & $1.69e+02$ & $5.30e+02$ \\
+    Newton & $8$ & $6.50e-16$ & $3.51e-16$ & $9.44e-16$ \\
+    \hline
+    DB & $100$ & $1.82e-15$ & $9.83e-16$ & $3.25e-15$ \\
+    DB & $27$ & $3.68e-16$ & $1.99e-16$ & $6.86e-16$ \\
+    \hline
+    Prod DB & $7$ & $9.26e-16$ & $5.00e-16$ & $1.69e-15$ \\
+    Prod DB & $7$ & $9.26e-16$ & $5.00e-16$ & $1.69e-15$ \\
+    \hline
+    CR & $7$ & $0.00e+00$ & $0.00e+00$ & $3.65e-16$ \\
+    CR & $6$ & $0.00e+00$ & $0.00e+00$ & $3.65e-16$ \\
+  \end{tabular}
+
+\end{frame}
+
 \end{document}
 

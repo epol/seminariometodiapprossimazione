@@ -6,7 +6,7 @@ import numpy
 import numpy.linalg
 
 
-def newton(A,tol,maxiter,norm=numpy.linalg.norm):
+def newton(A,tol,maxiter,norm=numpy.linalg.norm,raiseifbig=False):
     i = 0
     X = A
     try:
@@ -25,6 +25,8 @@ def newton(A,tol,maxiter,norm=numpy.linalg.norm):
         i = i+1
     if (res> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
+        if raiseifbig:
+            raise Exception("Methods hasn't converged")
     return X
 
 def newton_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
@@ -56,7 +58,7 @@ def newton_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
              'commutativity': commutativity
     }
 
-def db(A,tol,maxiter,norm=numpy.linalg.norm):
+def db(A,tol,maxiter,norm=numpy.linalg.norm,raiseifbig=False):
     i = 0
     X = A
     Y = numpy.eye(*(A.shape))
@@ -79,6 +81,8 @@ def db(A,tol,maxiter,norm=numpy.linalg.norm):
         i = i+1
     if (res> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
+        if raiseifbig:
+            raise Exception("Methods hasn't converged")
     return X
 
 def db_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
@@ -116,7 +120,7 @@ def db_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
              'commutativity': commutativity
     }
 
-def proddb(A,tol,maxiter,norm=numpy.linalg.norm):
+def proddb(A,tol,maxiter,norm=numpy.linalg.norm,raiseifbig=False):
     i = 0
     X = A
     M = A
@@ -139,6 +143,8 @@ def proddb(A,tol,maxiter,norm=numpy.linalg.norm):
         i = i+1
     if (res> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
+        if raiseifbig:
+            raise Exception("Methods hasn't converged")
     return X
 
 def proddb_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
@@ -169,16 +175,16 @@ def proddb_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
     if (res[-1]> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
     return { 'result': X[-1],
-             'approximations': X,
-             'prodapproximations': M,
-             'residues': res,
+             'approximations': numpy.array(X),
+             'prodapproximations': numpy.array(M),
+             'residues': numpy.array(res),
              'iterations': i,
-             'commutativity': commutativity
+             'commutativity': numpy.array(commutativity)
     }
 
 
 
-def cr(A,tol,maxiter,norm=numpy.linalg.norm):
+def cr(A,tol,maxiter,norm=numpy.linalg.norm,raiseifbig=False):
     i = 0
     Y = numpy.eye(*(A.shape)) - A
     Z = 2*(numpy.eye(*(A.shape)) +A)
@@ -199,6 +205,8 @@ def cr(A,tol,maxiter,norm=numpy.linalg.norm):
         i = i+1
     if (res> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
+        if raiseifbig:
+            raise Exception("Methods hasn't converged")
     return 0.25 *Z
 
 def cr_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
@@ -227,9 +235,10 @@ def cr_diagnostic(A,tol,maxiter,norm=numpy.linalg.norm):
     if (res[-1]> tol).all():
         logging.warning("Method hasn't converged with enough iterations")
     return { 'result': 0.25*Z[-1],
-             'approximations': Z,
-             'incapproximations': Y,
-             'residues': res,
+             'approximations': 0.25*numpy.array(Z),
+             'zapproximations': numpy.array(Z),
+             'incapproximations': numpy.array(Y),
+             'residues': numpy.array(res),
              'iterations': i,
-             'commutativity': commutativity
+             'commutativity': numpy.array(commutativity)
     }
