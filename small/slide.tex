@@ -105,21 +105,23 @@
 \begin{document}
 \maketitle
 
-\section{Definition and direct method}
+\section{Definition}
 
 \begin{frame}{Principal square root}
   \begin{columns}[T]
     \begin{column}{.45\textwidth}
       For $z\in \mathbb{C}$ the equation $y^2 = z$ has two solutions $y_1,
-      y_2$. It's easy to verify that $y_1 = -y_2$.
-      \vspace{20pt}
+      y_2$, when $z\not\in \mathbb{R}^-$ we call \textit{principal
+        square root} the $y$ such that $\re\pa{y} >0$.
+      \vspace{15pt}
       
-      We call \textit{principal squre root} a solution such that
-      $\re\pa{y} > 0$. Such $y$ exists (and it's unique) when $z
-      \not\in \mathbb{R}^-$.
-      \vspace{20pt}
+      If $A \in \mathbb{C} ^ {n \times n}$ is a non singular matrix
+      with no eigenvalues on $\mathbb{R}^-$ then there is one
+      principal square root of $A$ and we denote it as $A^{1/2}$.
+      \vspace{8pt}
 
-      We write $y = z ^{1/2}$ or $y = \sqrt{z}$.
+      It can be extended to singular matrices with semisimple zero
+      eigenvalues.
     \end{column}
     \begin{column}{.6\textwidth}
       \begin{figure}
@@ -138,103 +140,57 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Definition}
-  \begin{myteo}
-    Let $A \in \mathbb{C} ^ {n \times n}$ have no eigenvalues on
-    $\mathbb{R}^-$. There is a unique square root $X$ of $A$ all of
-    whose eigenvalues lay in the open right half-plane, and it is a
-    primary matrix function of $A$. 
-  \end{myteo}
-
-  We refer to $X$ as the \textit{principal square root} of $A$ and
-  write $X = A^{1/2}$.
-  \vfill
-
-  \begin{mypro}
-    If $A$ is real then $A^{1/2}$ is real.    
-  \end{mypro}
-\end{frame}
-
-\begin{frame}{Schur Method}
-  Let $A \in \mathbb{C}^{n\times n}$ be a nonsingolar matrix without
-  eigenvalues in $\mathbb{R}^-$, given a Schur decomposition
-  $A = QTQ^*$ we compute $A^{1/2} = Q U Q^*$ with $U$ such that:
-  \begin{align*}
-    u_{ii}^2 &= t_ii \\
-    \pa{u_{ii} + u_{jj}} u_{ij} &= t_{ij} - \sum _{k=i+1} ^{j-1}
-                                  u_{ik}u_{kj}
-  \end{align*}
+% \begin{frame}{Schur Method}
+%   Let $A \in \mathbb{C}^{n\times n}$ be a nonsingolar matrix without
+%   eigenvalues in $\mathbb{R}^-$, given a Schur decomposition
+%   $A = QTQ^*$ we compute $A^{1/2} = Q U Q^*$ with $U$ such that:
+%   \begin{align*}
+%     u_{ii}^2 &= t_ii \\
+%     \pa{u_{ii} + u_{jj}} u_{ij} &= t_{ij} - \sum _{k=i+1} ^{j-1}
+%                                   u_{ik}u_{kj}
+%   \end{align*}
   
-  \begin{block}{Cost}
-    $\pa{ 28+\frac{1}{3}} n^3$ floating point operations.
-  \end{block}
-\end{frame}
-
-\begin{frame}{Variations of Schur method}
-  The Schur method can be adapted to support singular matrices when
-  $0$ is a semisimple eigenvalue.
-  \[ T = \bra{
-      \begin{matrix}
-        T_{11} & T_{12} \\
-        0 & 0 
-      \end{matrix}
-    } \]
-  \vfill
-
-  When $A \in \mathbb{R}^-$ we can use the real Schur decomosition to
-  avoid complex arithmetic (with the same cost).
-\end{frame}
+%   \begin{block}{Cost}
+%     $\pa{ 28+\frac{1}{3}} n^3$ floating point operations.
+%   \end{block}
+% \end{frame}
 
 
 \section{Iterative methods}
 
 \subsection{Newton iteration}
 
-\begin{frame}{Newton's method derivation}
-  Let $Y$ be an approximate solution of the equation $X^2 = A$, so let
-  $X = Y+E$, then:
-  \[ A = \pa{Y+E}^2 = Y^2 + YE + EY + E^2 \]
-  If we omit the second order in $E$ and we fix the first
-  approximation $X_0$ we obtain the following iteration:
-  \begin{align*}
-    X_k E_k + E_k X_k &= A - X_k ^2 \\
-    X_{k+1} &= X_k + E_k
-  \end{align*}
+% \begin{frame}{``Full'' Newton's method}
+%   \[ A = \pa{Y+E}^2 = Y^2 + YE + EY + E^2 \]
+%   \begin{align*}
+%     X_k E_k + E_k X_k &= A - X_k ^2 \\
+%     X_{k+1} &= X_k + E_k
+%   \end{align*}
   
-  Solving the Sylvester equation for $E_k$ at every step we obtain a
-  succession of matrices $\pa{ X_k} _{k\in \mathbb{N}}$.
-\end{frame}
+%   Solving the Sylvester equation for $E_k$ at every step we obtain a
+%   succession of matrices $\pa{ X_k} _{k\in \mathbb{N}}$.
 
-\begin{frame}
-  \begin{align*}
-    X_k E_k + E_k X_k &= A - X_k ^2 \\
-    X_{k+1} &= X_k + E_k
-  \end{align*}
-  This Sylvester equation is non singular if and only if $X_k$ and
-  $-X_k$ have no eigenvalues in common.
-  \vfill
+%   \begin{myoss}
+%     We need to resolve a Sylvester equation for each iteration, so we
+%     pay at least $25n^3$ flops (a Schur decomposition) every time!
+%   \end{myoss}
+% \end{frame}
 
-  \begin{myoss}
-    We need to resolve a Sylvester equation for each iteration, so we
-    pay at least $25n^3$ flops (a Schur decomposition) every time!
-  \end{myoss}
-\end{frame}
-
-\begin{frame}
-  If $X_k$ commutes with $E_k$ we can write
-  \[ E_k = \frac{1}{2} X_k ^{-1} \pa{ A - X_k ^2} \Rightarrow X_{k+1}
-    =  \frac{1}{2} \pa{ X_k ^{-1} A + X_k } \]
-  \pause
-  \begin{mylem}
-    Suppose that in the Newton iteration $X_0$ commutes with $A$ and
-    all the iterates are well-defined. Then, for all $k$, $X_k$
-    commutes with $A$ and
-    \[ X_{k+1} = \frac{1}{2} \pa{ X_k + X_k ^{-1} A} \]
-  \end{mylem}
-  \begin{proof}
-    By induction.
-  \end{proof}
-\end{frame}
+% \begin{frame}
+%   If $X_k$ commutes with $E_k$ we can write
+%   \[ E_k = \frac{1}{2} X_k ^{-1} \pa{ A - X_k ^2} \Rightarrow X_{k+1}
+%     =  \frac{1}{2} \pa{ X_k ^{-1} A + X_k } \]
+%   \pause
+%   \begin{mylem}
+%     Suppose that in the Newton iteration $X_0$ commutes with $A$ and
+%     all the iterates are well-defined. Then, for all $k$, $X_k$
+%     commutes with $A$ and
+%     \[ X_{k+1} = \frac{1}{2} \pa{ X_k + X_k ^{-1} A} \]
+%   \end{mylem}
+%   \begin{proof}
+%     By induction.
+%   \end{proof}
+% \end{frame}
 
 \begin{frame}{Newton's method}
   \begin{block}{Newton iteration}
@@ -247,61 +203,67 @@
     \]
   \end{block}
 
-  If $A$ is nonsingular it can be proved that this method has
-  quadratic convergence for $X_0$ chosen sufficiently close to
-  $A^{1/2}$.
-\end{frame}
-
-\begin{frame}{Newton's method convergence}
   \begin{myteo}
-    Let $A \in \mathbb{C}^{n\times n}$ have no eigenvaules on
-    $\mathbb{R}^-$. The Newton iterates $X_k$ with any $X_0$ that
-    commutes with $A$ are related to the Newton sign iterates:
-    \begin{align*}
-      S_{k+1} = & \frac{1}{2} \pa{ S_k + S_k^{-1}} \\
-      S_0 = & A^{-1/2} X_0 
-    \end{align*}
-    by $X_k = A^{1/2} S_k$.
-  \end{myteo}
-  \begin{proof}
-    By induction on $k$:
-    \[ X_{k+1} = \frac{1}{2}\pa{A^{1/2}S_k + S_k^{-1}A^{-1/2}A} =
-        A^{1/2}\frac{1}{2}\pa{S_k + S_k ^{-1}} \]
-  \end{proof}
-\end{frame}
-
-\begin{frame}{Newton's method convergence}
-  \begin{myteo}
-    If $A^{-1/2}X_0$ has no pure imaginary eigenvaules, the $X_k$
-    are defined and $X_k$ converges quadratically to
-    $A^{1/2}\sign\pa{A^{-1/2} X_0}$.
-
     If the spectrum  of $A^{-1/2} X_0$ lies in the right half-plane
-    then $X_k$ converges quadratically to $A^{1/2}$ and, for any
-    consistent norm,
-    \[ \norm{X_{k+1} - A^{1/2}} \le \frac{1}{2}\norm{X_k ^{-1}}
-      \norm{X_k - A^{1/2}} ^2 \]
+    then $X_k$ converges quadratically to $A^{1/2}$.
   \end{myteo}
-  \vfill
-  
-  The hypothesis that $A$ has no eigenvaules in $\mathbb{R}^-$ and our
-  choice of the principal square root function imply that the spectrum
-  of $A^{1/2}$ is contained in the open right half-plane.
+  \begin{myoss}
+    In exact arithmetic $X_k$ commutes with $A$, in machine arithmetic
+    this propriety may be lost.
+  \end{myoss}
 \end{frame}
 
-\begin{frame}{Newton's method speed of convergence}
-  We have proved that the Newton's method converges for any choice of
-  $X_0$ that commutes with $A$, moreover it converges to $A^{1/2}$
-  quadratically for $X_0 = A$.
-  \vfill
-  
-  It's known that the Newton iteration for $\sign\pa{M}$ requires many
-  iterations when $M$ has an eigenvalue close to the imaginary axis.
 
-  Recalling the relation $X_k = A^{1/2} S_k$ we can conclude that our
-  Newton iteration requires many iterations when $A$ has an eigenvalue
-  close to the negative real axis.  
-\end{frame}
+% \begin{frame}{Newton's method convergence}
+%   \begin{myteo}
+%     Let $A \in \mathbb{C}^{n\times n}$ have no eigenvaules on
+%     $\mathbb{R}^-$. The Newton iterates $X_k$ with any $X_0$ that
+%     commutes with $A$ are related to the Newton sign iterates:
+%     \begin{align*}
+%       S_{k+1} = & \frac{1}{2} \pa{ S_k + S_k^{-1}} \\
+%       S_0 = & A^{-1/2} X_0 
+%     \end{align*}
+%     by $X_k = A^{1/2} S_k$.
+%   \end{myteo}
+%   \begin{proof}
+%     By induction on $k$:
+%     \[ X_{k+1} = \frac{1}{2}\pa{A^{1/2}S_k + S_k^{-1}A^{-1/2}A} =
+%         A^{1/2}\frac{1}{2}\pa{S_k + S_k ^{-1}} \]
+%   \end{proof}
+% \end{frame}
+
+% \begin{frame}{Newton's method convergence}
+%   \begin{myteo}
+%     If $A^{-1/2}X_0$ has no pure imaginary eigenvaules, the $X_k$
+%     are defined and $X_k$ converges quadratically to
+%     $A^{1/2}\sign\pa{A^{-1/2} X_0}$.
+
+%     If the spectrum  of $A^{-1/2} X_0$ lies in the right half-plane
+%     then $X_k$ converges quadratically to $A^{1/2}$ and, for any
+%     consistent norm,
+%     \[ \norm{X_{k+1} - A^{1/2}} \le \frac{1}{2}\norm{X_k ^{-1}}
+%       \norm{X_k - A^{1/2}} ^2 \]
+%   \end{myteo}
+%   \vfill
+  
+%   The hypothesis that $A$ has no eigenvaules in $\mathbb{R}^-$ and our
+%   choice of the principal square root function imply that the spectrum
+%   of $A^{1/2}$ is contained in the open right half-plane.
+% \end{frame}
+
+% \begin{frame}{Newton's method speed of convergence}
+%   We have proved that the Newton's method converges for any choice of
+%   $X_0$ that commutes with $A$, moreover it converges to $A^{1/2}$
+%   quadratically for $X_0 = A$.
+%   \vfill
+  
+%   It's known that the Newton iteration for $\sign\pa{M}$ requires many
+%   iterations when $M$ has an eigenvalue close to the imaginary axis.
+
+%   Recalling the relation $X_k = A^{1/2} S_k$ we can conclude that our
+%   Newton iteration requires many iterations when $A$ has an eigenvalue
+%   close to the negative real axis.  
+% \end{frame}
 
 \subsection{DB iteration}
 
@@ -326,8 +288,11 @@
   \begin{align*}
     \lim _{k \to \infty} X_k &= A^{1/2} \\
     \lim _{k\to \infty} Y_k &= A^{-1/2}
-  \end{align*}  
-  It has the same proprieties of the Newton iterations.
+  \end{align*}
+  \vfill
+
+  In exact arithmetic it has the same proprieties of the Newton
+  iterations.
 \end{frame}
 
 \begin{frame}{Product form of DB iteration}
