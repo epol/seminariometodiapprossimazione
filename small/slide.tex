@@ -549,6 +549,36 @@
 
 \section{Numerical experiments}
 
+\subsection{Slow convergence}
+
+\begin{frame}{Slow matrices}
+  We've seen that the iterations based on the Newton iteration are
+  slow if the input matrix has eigenvalues near $\mathbb{R}^-$.
+  \vfill
+
+  So we analize the number of iterations required for the matrix
+  
+  \[ A = V \bra{ \begin{matrix}
+        1 & & \\ 
+        & 2 & \\ 
+        & & \begin{matrix}
+          -1 & \varepsilon \\
+          - \varepsilon & -1
+        \end{matrix}
+      \end{matrix}
+    } V^{T}
+  \]
+  where $V$ is a random orthogonal matrix.
+
+  The matrix $A$ has eigenvalues:
+  \[ \set{1,2,-1+\varepsilon i,-1 -\varepsilon} \]
+\end{frame}
+
+\begin{frame}
+  \includegraphics[width=\textwidth,height=\textheight]{"eig_orto"}
+\end{frame}
+
+
 \subsection{First example}
 
 \begin{frame}{First example}

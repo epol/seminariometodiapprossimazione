@@ -8,6 +8,7 @@ import logging
 import matplotlib.pyplot as pyplot
 import prettytable
 import os
+import scipy.stats
 
 def find_best(A,tol=1e-20,maxiter=100):
     S = None
@@ -132,3 +133,50 @@ Method & Iteration & Absolute error & Relative error & Square residue \\\\
              'psi_n': psi_n(eigs),
              'scond': numpy.linalg.cond(S)
     }
+
+
+
+
+
+def near_rminus(V=None,n=4,dmin=-5,dmax=0,dsamples=50):
+    if V is None:
+        V = scipy.stats.ortho_group.rvs(4)
+    drange = numpy.logspace(dmin,dmax,dsamples)
+    diageig = numpy.diag(numpy.linspace(1,2,n-2))
+
+
+    names_methods = [ ('Newton',methods.newton_diagnostic),
+                      ('DB',methods.db_diagnostic),
+                      ('Product DB',methods.proddb_diagnostic),
+                      ('CR',methods.cr_diagnostic) ]
+    table = prettytable.PrettyTable(['Distance']+[name for (name,method) in names_methods])
+    latextable = "\\begin{tabular}{r| c c c c}\n"
+    latextable += " & ".join(['Distance']+[name for (name,method) in names_methods]) + "\\\\\n"
+    latextable += "\\hline\n"
+    niters = { name: [] for (name,methods) in names_methods}
+    for d in drange:
+        A = scipy.linalg.block_diag(diageig,[[-1,d],[-d,-1]])
+        row = [ d ]
+        for (name,method) in names_methods:
+            dic = method(A,1e-12,30)
+            iters = dic['iterations']
+            row.append(iters)
+            niters[name].append(iters)
+        table.add_row(row)
+        latextable += " & ".join([str(x) for x in row]) + "\\\\\n"
+    print(table)
+
+    fig1 = pyplot.figure()
+    for (name,_) in names_methods:
+        pyplot.semilogx(drange,niters[name],label=name)
+    pyplot.rc('text', usetex=True)
+    pyplot.rc('font', family='serif')
+    pyplot.xlim(10.**dmax,10.**dmin)
+    pyplot.xlabel(r"$\varepsilon$",fontsize=16)
+    pyplot.legend(loc='best')
+    fig1.savefig('eig_orto.png')
+        
+    return { 'figure': fig1,
+             'latex': latextable,
+             'niters' : niters
+             }
