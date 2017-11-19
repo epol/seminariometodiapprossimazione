@@ -194,7 +194,6 @@
 
 \begin{frame}{Newton's method}
   \begin{block}{Newton iteration}
-    Setting $X_0 = A$ (or $X_0 = I$) we obtain
     \[ \left\{
         \begin{matrix}
           X_0 &=& A \\
@@ -208,8 +207,8 @@
     then $X_k$ converges quadratically to $A^{1/2}$.
   \end{myteo}
   \begin{myoss}
-    In exact arithmetic $X_k$ commutes with $A$, in machine arithmetic
-    this propriety may be lost.
+    In exact arithmetic every $X_k$ commutes with $A$, in machine
+    arithmetic this propriety may be lost.
   \end{myoss}
 \end{frame}
 
@@ -296,7 +295,7 @@
 \end{frame}
 
 \begin{frame}{Product form of DB iteration}
-  If we define $M_k$ = $X_kY_k$ we have
+  If we set $M_k$ = $X_kY_k$ then we have
   \[ M_{k+1} = \frac{1}{4}\pa{2 I + X_kY_k + Y_k^{-1}X_k^{-1}} =
     \frac{1}{4}\pa{2I + M_k + M_k^{-1}} \]
   \begin{block}{Product form of DB iteration}
@@ -316,10 +315,11 @@
 \subsection{CR method}
 
 \begin{frame}{CR and IN methods derivation}
-  Recall that we derived the Newton method writing
-  \[ X_{k+1} - X_k = E_{k} = \frac{1}{2} X_k^{-1} \pa{A-X_k^2} \]
+  From the Newton method we can write:
+  \[ E_{k} = X_{k+1} - X_k = \frac{1}{2}\pa{X_k + X_k^{-1}A} - X_k =
+    \frac{1}{2} X_k^{-1} \pa{A-X_k^2} \]
   
-  So we write:
+  From this we obtain:
   \begin{align*}
     E_{k+1} &= \frac{1}{2}X_{k+1}^{-1}\pa{A-X_{k+1}^2} \\
     &= \frac{1}{2}X_{k+1}^{-1}\pa{A-\frac{1}{4}\pa{X_k +X_k^{-1}A}^2}
