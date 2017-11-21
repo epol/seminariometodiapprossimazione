@@ -579,6 +579,44 @@
 \end{frame}
 
 
+\subsection{Testing methods}
+
+\begin{frame}{Testing methods}
+  For each matrix $A$ to be tested we compute the square root with the
+  Schur method, the product DB method and the CR method (the last two
+  with a $10^{-30}$ tolerance). We call $S$ the ``best'' approximation
+  that minimizes the following quantity:
+  \[ \norm{S^2 - A}_F \]
+  \vfill
+
+  Then for each method with iterate on the matrix $A$ with a tolerance
+  of $10^{-16}$ (for at most $100$ iterations) and we compute the
+  absolute error, relative error and residue for the final iteration
+  and the best iteration (best for the absolute error).
+\end{frame}
+
+\begin{frame}{Plot}
+  For each method we plot (with a logarithmic $y$ scale) the following
+  quantities for each iteration:
+  \begin{itemize}
+  \item Residues the stopping criterion used by the method:
+    \begin{itemize}
+    \item Newton and DB: $\norm{X_k ^2 - A}$,
+    \item Product DB: $\norm{M_k -I}$,
+    \item CR: $\norm{Y}$;
+    \end{itemize}
+  \item Commutativity:
+    \begin{itemize}
+    \item Newton: $\norm{AX_k - X_kA}$,
+    \item DB: $\norm{X_kY_k - Y_kX_k}$,
+    \item Product DB: $\norm{M_kX_k - X_k,M_k}$,
+    \item CR: $\norm{Y_kZ_k - Z_kY_k}$;
+    \end{itemize}
+  \item Absolute error: $\norm{X_k - S}$.
+  \end{itemize}
+\end{frame}
+
+
 \subsection{First example}
 
 \begin{frame}{First example}
